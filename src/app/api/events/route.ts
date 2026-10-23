@@ -1,4 +1,5 @@
 import { cacheLife } from "next/cache";
+import { bulletinEvents } from "@/data/bulletins";
 
 // Public JSON feed behind calendar.tamu.edu (LiveWhale). Returns roughly the next ~10 days of events.
 const FEED_URL = "https://calendar.tamu.edu/live/json/events/";
@@ -175,6 +176,11 @@ async function getCampusEvents(): Promise<CampusEvent[]> {
 }
 
 export async function GET() {
-  const events = await getCampusEvents();
-  return Response.json({ source: "calendar.tamu.edu", events });
+  const feed = await getCampusEvents();
+  // Bulletin items the feed already lists (same title and day) aren't repeated.
+  const seen = new Set(feed.map((e) => `${e.date}|${e.title.toLowerCase()}`));
+  const events = [...feed, ...bulletinEvents.filter((e) => !seen.has(`${e.date}|${e.title.toLowerCase()}`))].sort((a, b) =>
+    (a.date + a.start).localeCompare(b.date + b.start),
+  );
+  return Response.json({ source: "calendar.tamu.edu + TAMU email bulletins", events });
 }
