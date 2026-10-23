@@ -46,6 +46,7 @@ export type CampusEvent = {
   priceLabel: string;
   networking: boolean;
   free: boolean; // freebies: food, swag, giveaways
+  grad: boolean; // relevant to graduate students
 };
 
 // Facility opening hours flood the feed but aren't events.
@@ -69,6 +70,9 @@ const FREEBIES =
   /\b(free (food|lunch|breakfast|dinner|pizza|snacks?|coffee|t-?shirts?|swag|merch|giveaways?)|refreshments|pizza|snacks|treats|cookies|giveaways?|swag|door prizes?|raffle|(lunch|food|breakfast|dinner) (will be )?(provided|served)|complimentary)\b/i;
 
 // Feed fields are mostly HTML strings, but some (like cost) are occasionally numbers.
+const GRAD =
+  /\b(grad(uate)? (students?|school|studies|and professional)|graduate|ph\.?d|doctoral|dissertations?|thesis|theses|master'?s|postdocs?|fellowships?|3MT|three minute thesis|teaching assistants?|CIRTL|GPS)\b/i;
+
 function decode(value: unknown) {
   return String(value ?? "")
     .replace(/<[^>]*>/g, " ")
@@ -149,6 +153,7 @@ function toCampusEvent(e: FeedEvent): CampusEvent | null {
     priceLabel: price === null ? "" : price === 0 ? "Free" : `From $${price}`,
     networking: NETWORKING.test(fullText) || types.includes("Open Houses & Receptions"),
     free: FREEBIES.test(fullText),
+    grad: GRAD.test(`${fullText} ${host} ${(e.tags ?? []).join(" ")}`) || /graduate/i.test((e.event_types_audience ?? []).join(" ")),
   };
 }
 
