@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Serve the Aggielander single-page app (public/aggielander.html) at the root URL.
+  async rewrites() {
+    return [{ source: "/", destination: "/aggielander.html" }];
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

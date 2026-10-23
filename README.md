@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aggielander
 
-## Getting Started
+Your student calendar and campus events, together. Built with Next.js; the app itself lives in
+[`public/aggielander.html`](public/aggielander.html) and is served at `/` (see `next.config.ts`).
 
-First, run the development server:
+## Run it locally
+
+Needs [Node.js](https://nodejs.org) LTS and git.
 
 ```bash
+git clone https://github.com/dharaneepatel15/aggielander.git
+cd aggielander
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Edits to `public/aggielander.html` show up on refresh.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Ship it
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Push to `main`. Once the repo is imported into Vercel, every push redeploys automatically.
 
-## Learn More
+```bash
+git add .
+git commit -m "describe the change"
+git push
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+API keys go in a `.env.local` file (already git-ignored) and in Vercel → Project → Settings →
+Environment Variables. Never commit them.
